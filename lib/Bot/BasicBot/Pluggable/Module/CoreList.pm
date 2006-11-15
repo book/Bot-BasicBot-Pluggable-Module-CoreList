@@ -6,7 +6,7 @@ use Module::CoreList;
 
 use vars qw( @ISA $VERSION );
 @ISA     = qw(Bot::BasicBot::Pluggable::Module);
-$VERSION = '0.01';
+$VERSION = '0.02';
 
 my $ident = qr/[A-Za-z_][A-Za-z_0-9]*/;
 
