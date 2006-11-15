@@ -1,5 +1,8 @@
 Revision history for Bot-BasicBot-Pluggable-Module-CoreList
 
+0.02 Wed Nov 15 11:58:18 CET 2006
+        - documentation slightly improved
+
 0.01 Tue Nov 14 23:48:27 CET 2006
         - First version, because the original corelist bot wasn't hanging
           around on #perl when I needed it
