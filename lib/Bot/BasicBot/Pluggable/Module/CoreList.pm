@@ -69,7 +69,8 @@ over IRC.
 
 =head1 IRC USAGE
 
-To learn about the presence of a module in the Perl core, simply ask:
+To learn about the presence or absence of a module in the Perl core,
+simply ask:
 
     corelist Test::More
 
