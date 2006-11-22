@@ -179,6 +179,15 @@ my @tests = (
             '_nick'    => 'bam',
         } => 'Found no module matching /xyzzy/ in perl 5.006',
     ],
+    [   {   'body'     => 'corelist date vars',
+            'raw_nick' => 'BooK!~book@d83-179-185-40.cust.tele2.fr',
+            'who'      => 'BooK',
+            'address'  => 'bam',
+            'channel'  => '#zlonkbam',
+            'raw_body' => 'bam corelist date vars ',
+            '_nick'    => 'bam',
+        } => 'vars was first released with perl 5.002 (released on 1996-02-96)',
+    ],
 );
 
 plan tests => @tests + 1;
