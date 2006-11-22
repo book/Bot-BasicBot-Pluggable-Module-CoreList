@@ -19,6 +19,10 @@ my $nick;
 my $datadumper = $Module::CoreList::VERSION >= 2.01
     ? 'Data::Dumper was first released with perl 5.005 (patchlevel perl/1647, released on 1998-07-22)'
     : 'Data::Dumper was first released with perl 5.005 (released on 1998-07-22)';
+my $large_search = join ', ',
+    ( Module::CoreList->find_modules(qr/e/) )[ 0 .. 8 ], '...';
+my $large_search_56 = join ', ',
+    ( Module::CoreList->find_modules( qr/e/, '5.006' ) )[ 0 .. 8 ], '...';
 
 diag "Testing with Module::CoreList version $Module::CoreList::VERSION";
 
@@ -67,6 +71,15 @@ my @tests = (
             '_nick'    => 'bam',
         } => $datadumper,
     ],
+    [   {   'body'     => 'corelist: release Data::Dumper',
+            'raw_nick' => 'BooK!~book@d83-179-185-40.cust.tele2.fr',
+            'who'      => 'BooK',
+            'address'  => 'msg',
+            'channel'  => 'msg',
+            'raw_body' => 'corelist: release Data::Dumper',
+            '_nick'    => 'bam',
+        } => $datadumper,
+    ],
     [   {   'body'     => 'corelist:Data::Dumper',
             'raw_nick' => 'BooK!~book@d83-179-185-40.cust.tele2.fr',
             'who'      => 'BooK',
@@ -94,6 +107,15 @@ my @tests = (
             '_nick'    => 'corelist',
         } => 'Bam::Blonk::Zlonk is not in the core',
     ],
+    [   {   'body'     => 'date Bam::Blonk::Zlonk',
+            'raw_nick' => 'BooK!~book@d83-179-185-40.cust.tele2.fr',
+            'who'      => 'BooK',
+            'address'  => 'corelist',
+            'channel'  => '#zlonkbam',
+            'raw_body' => 'corelist date Bam::Blonk::Zlonk',
+            '_nick'    => 'corelist',
+        } => 'Bam::Blonk::Zlonk is not in the core',
+    ],
     [   {   'body'     => 'zlonk',
             'raw_nick' => 'BooK!~book@d83-179-185-40.cust.tele2.fr',
             'who'      => 'BooK',
@@ -103,14 +125,59 @@ my @tests = (
             '_nick'    => 'corelist',
         } => 'zlonk is not in the core',
     ],
-    [   {   'body'     => 'corelist zlonk',
+    [   {   'body'     => 'corelist search Bench',
             'raw_nick' => 'BooK!~book@d83-179-185-40.cust.tele2.fr',
             'who'      => 'BooK',
             'address'  => 'bam',
             'channel'  => '#zlonkbam',
-            'raw_body' => 'bam: corelist zlonk',
+            'raw_body' => 'bam: corelist search Bench',
             '_nick'    => 'bam',
-        } => 'zlonk is not in the core',
+        } => 'Found Benchmark',
+    ],
+    [   {   'body'     => 'corelist find Data 5.006',
+            'raw_nick' => 'BooK!~book@d83-179-185-40.cust.tele2.fr',
+            'who'      => 'BooK',
+            'address'  => 'bam',
+            'channel'  => '#zlonkbam',
+            'raw_body' => 'bam: corelist find Data 5.006',
+            '_nick'    => 'bam',
+        } => 'Found Data::Dumper in perl 5.006',
+    ],
+    [   {   'body'     => 'corelist search e',
+            'raw_nick' => 'BooK!~book@d83-179-185-40.cust.tele2.fr',
+            'who'      => 'BooK',
+            'address'  => 'bam',
+            'channel'  => '#zlonkbam',
+            'raw_body' => 'bam: corelist search e',
+            '_nick'    => 'bam',
+        } => "Found $large_search",
+    ],
+    [   {   'body'     => 'corelist search e 5.006',
+            'raw_nick' => 'BooK!~book@d83-179-185-40.cust.tele2.fr',
+            'who'      => 'BooK',
+            'address'  => 'bam',
+            'channel'  => '#zlonkbam',
+            'raw_body' => 'bam: corelist search e 5.006',
+            '_nick'    => 'bam',
+        } => "Found $large_search_56 in perl 5.006",
+    ],
+    [   {   'body'     => 'corelist search xyzzy',
+            'raw_nick' => 'BooK!~book@d83-179-185-40.cust.tele2.fr',
+            'who'      => 'BooK',
+            'address'  => 'bam',
+            'channel'  => '#zlonkbam',
+            'raw_body' => 'bam: corelist search xyzzy',
+            '_nick'    => 'bam',
+        } => 'Found no module matching /xyzzy/',
+    ],
+    [   {   'body'     => 'corelist search xyzzy 5.006',
+            'raw_nick' => 'BooK!~book@d83-179-185-40.cust.tele2.fr',
+            'who'      => 'BooK',
+            'address'  => 'bam',
+            'channel'  => '#zlonkbam',
+            'raw_body' => 'bam: corelist search xyzzy 5.006',
+            '_nick'    => 'bam',
+        } => 'Found no module matching /xyzzy/ in perl 5.006',
     ],
 );
 
@@ -119,7 +186,7 @@ plan tests => @tests + 1;
 my $pkg = 'Bot::BasicBot::Pluggable::Module::CoreList';
 
 # quick test of the help string
-like( $pkg->help(), qr/corelist module/, 'Basic usage line' );
+like( $pkg->help(), qr/corelist \[release\] module/, 'Basic usage line' );
 
 for my $t (@tests) {
     $nick = delete $t->[0]{_nick};    # setup our nick
