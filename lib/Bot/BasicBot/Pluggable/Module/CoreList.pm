@@ -51,8 +51,7 @@ sub told {
         my ( $release, $patchlevel, $date )
             = ( Module::CoreList->first_release($module), '', '' );
         if ($release) {
-            $patchlevel = $release
-                && $Module::CoreList::patchlevel{$release}
+            $patchlevel = $Module::CoreList::patchlevel{$release}
                 ? join( "/", @{ $Module::CoreList::patchlevel{$release} } )
                 : '';
             $date  = $Module::CoreList::released{$release};
