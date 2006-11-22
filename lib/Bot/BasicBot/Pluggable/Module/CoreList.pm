@@ -6,9 +6,10 @@ use Module::CoreList;
 
 use vars qw( @ISA $VERSION );
 @ISA     = qw(Bot::BasicBot::Pluggable::Module);
-$VERSION = '0.02';
+$VERSION = '0.03';
 
 my $ident = qr/[A-Za-z_][A-Za-z_0-9]*/;
+my $cmds  = qr/find|search|release|date/;
 
 sub told {
     my ( $self, $mess ) = @_;
@@ -24,29 +25,49 @@ sub told {
 
     # only answer to our command (which can be our name too)
     my $src = $bot->nick() eq 'corelist' ? 'raw_body' : 'body';
-    return if $mess->{$src} !~ /^\s*corelist.*?($ident(?:::$ident)*)/i;
+    return
+        if $mess->{$src}
+        !~ /^\s*corelist(?:\W+($cmds))?\W+(.*)/io;
 
     # grab the parameter list
-    my $module = $1;
+    my ( $command, $module, @args ) = ( $1 || 'release', split /\s+/, $2 );
 
     # compute the reply
-    my ( $release, $patchlevel, $date )
-        = ( Module::CoreList->first_release($module), '', '' );
-    if ($release) {
-        $patchlevel = $release && %Module::CoreList::patchlevel
-            ? join( "/", @{ $Module::CoreList::patchlevel{$release} } )
-            : '';
-        $date = $Module::CoreList::released{$release};
+    my $reply;
+    if ( $command =~ /^(?:find|search)$/i ) {
+        my @modules = Module::CoreList->find_modules( qr/$module/, @args );
+
+        # shorten large response lists
+        @modules = (@modules[0..8], '...') if @modules > 9;
+
+        local $" = ', ';
+        my $where = ( @args ? " in perl @args" : '' );
+        $reply = ( @modules
+            ? "Found @modules"
+            : "Found no module matching /$module/" )
+            . $where;
+    }
+    else {
+        my ( $release, $patchlevel, $date )
+            = ( Module::CoreList->first_release($module), '', '' );
+        if ($release) {
+            $patchlevel = $release
+                && %Module::CoreList::patchlevel
+                ? join( "/", @{ $Module::CoreList::patchlevel{$release} } )
+                : '';
+            $date  = $Module::CoreList::released{$release};
+        }
+        $reply = $release
+            ? "$module was first released with perl $release "
+            . ( $patchlevel ? "(patchlevel $patchlevel, " : '' )
+            . "released on $date)"
+            : "$module is not in the core";
     }
 
-    return $release
-        ? "$module was first released with perl $release "
-        . ( $patchlevel ? "(patchlevel $patchlevel, " : '' )
-        . "released on $date)"
-        : "$module is not in the core";
+    return $reply;
 }
 
-sub help {'corelist module'}
+sub help {'corelist [release] module, or corelist find regex [perl versions]'}
 
 1;
 
@@ -69,14 +90,44 @@ over IRC.
 
 =head1 IRC USAGE
 
-To learn about the presence or absence of a module in the Perl core,
-simply ask:
+The robot replies to requests in the following form:
 
-    corelist Test::More
+    corelist <subcommand> [args]
 
-to which the bot will reply:
+=head2 Commands
 
-    Test::More was first released with perl 5.7.3 (patchlevel perl/15039, released on 2002-03-05)  
+The robot understand the following subcommands:
+
+=over 4
+
+=item * release
+
+=item * date
+
+    < you> bot: corelist release Test::More
+    < bot> you: Test::More was first released with perl 5.7.3 (patchlevel perl/15039, released on 2002-03-05)
+
+If no command is given, C<release> is the default.
+
+=item * search
+
+=item * find
+
+    < you> bot corelist search Data
+    < bot> Found Data::Dumper, Module::Build::ConfigData
+
+Perl version numbers can be passed as optional parameters to restrict
+the search:
+
+    < you> corelist search Data 5.006
+    < bot> Found Data::Dumper in perl 5.006
+
+The search never returns more than 9 replies, to avoid flooding the channel:
+
+    < you> bot: corelist find e
+    < bot> Found AnyDBM_File, AutoLoader, B::Assembler, B::Bytecode, B::Debug, B::Deparse, B::Disassembler, B::Showlex, B::Terse, ... 
+
+=back
 
 =head1 AUTHOR
 
