@@ -52,14 +52,14 @@ sub told {
             = ( Module::CoreList->first_release($module), '', '' );
         if ($release) {
             $patchlevel = $release
-                && %Module::CoreList::patchlevel
+                && $Module::CoreList::patchlevel{$release}
                 ? join( "/", @{ $Module::CoreList::patchlevel{$release} } )
                 : '';
             $date  = $Module::CoreList::released{$release};
         }
         $reply = $release
-            ? "$module was first released with perl $release "
-            . ( $patchlevel ? "(patchlevel $patchlevel, " : '' )
+            ? "$module was first released with perl $release ("
+            . ( $patchlevel ? "patchlevel $patchlevel, " : '' )
             . "released on $date)"
             : "$module is not in the core";
     }
