@@ -16,7 +16,7 @@ my $nick;
     sub nick {$nick}
 }
 
-my $datadumper = $Module::CoreList::VERSION >= 2.01
+my $datadumper = $Module::CoreList::VERSION >= 2.01 && $Module::CoreList::VERSION < 2.18
     ? 'Data::Dumper was first released with perl 5.005 (patchlevel perl/1647, released on 1998-07-22)'
     : 'Data::Dumper was first released with perl 5.005 (released on 1998-07-22)';
 my $large_search = join ', ',
