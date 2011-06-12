@@ -7,7 +7,7 @@ WriteMakefile(
     ABSTRACT_FROM => 'lib/Bot/BasicBot/Pluggable/Module/CoreList.pm',
     PREREQ_PM     => {
         'Test::More'               => 0,
-        'Module::CoreList'         => 0,
+        'Module::CoreList'         => 2.18,
         'Bot::BasicBot::Pluggable' => '0.5'
     },
     PL_FILES => {},
