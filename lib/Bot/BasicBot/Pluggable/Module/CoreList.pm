@@ -2,7 +2,7 @@ package Bot::BasicBot::Pluggable::Module::CoreList;
 
 use strict;
 use Bot::BasicBot::Pluggable::Module;
-use Module::CoreList;
+use Module::CoreList 2.18;
 
 use vars qw( @ISA $VERSION );
 @ISA     = qw(Bot::BasicBot::Pluggable::Module);
@@ -48,17 +48,11 @@ sub told {
             . $where;
     }
     else {
-        my ( $release, $patchlevel, $date )
-            = ( Module::CoreList->first_release($module), '', '' );
-        if ($release) {
-            $patchlevel = $Module::CoreList::patchlevel{$release}
-                ? join( "/", @{ $Module::CoreList::patchlevel{$release} } )
-                : '';
-            $date  = $Module::CoreList::released{$release};
-        }
+        my ( $release, $date )
+            = ( Module::CoreList->first_release($module), '' );
+        $date  = $Module::CoreList::released{$release} if $release;
         $reply = $release
             ? "$module was first released with perl $release ("
-            . ( $patchlevel ? "patchlevel $patchlevel, " : '' )
             . "released on $date)"
             : "$module is not in the core";
     }
@@ -104,7 +98,7 @@ The robot understand the following subcommands:
 =item * date
 
     < you> bot: corelist release Test::More
-    < bot> you: Test::More was first released with perl 5.7.3 (patchlevel perl/15039, released on 2002-03-05)
+    < bot> you: Test::More was first released with perl 5.7.3 (released on 2002-03-05)
 
 If no command is given, C<release> is the default.
 
@@ -124,7 +118,7 @@ the search:
 The search never returns more than 9 replies, to avoid flooding the channel:
 
     < you> bot: corelist find e
-    < bot> Found AnyDBM_File, AutoLoader, B::Assembler, B::Bytecode, B::Debug, B::Deparse, B::Disassembler, B::Showlex, B::Terse, ... 
+    < bot> Found AnyDBM_File, AutoLoader, B::Assembler, B::Bytecode, B::Debug, B::Deparse, B::Disassembler, B::Showlex, B::Terse, ...
 
 =back
 
