@@ -19,6 +19,9 @@ my $nick;
 my $datadumper = $Module::CoreList::VERSION >= 2.01 && $Module::CoreList::VERSION < 2.18
     ? 'Data::Dumper was first released with perl 5.005 (patchlevel perl/1647, released on 1998-07-22)'
     : 'Data::Dumper was first released with perl 5.005 (released on 1998-07-22)';
+my $vars = $Module::CoreList::VERSION < 2.18
+    ? 'vars was first released with perl 5.002 (released on 1996-02-96)'
+    : 'vars was first released with perl 5.002 (released on 1996-02-29)';
 my $large_search = join ', ',
     ( Module::CoreList->find_modules(qr/e/) )[ 0 .. 8 ], '...';
 my $large_search_56 = join ', ',
@@ -186,7 +189,7 @@ my @tests = (
             'channel'  => '#zlonkbam',
             'raw_body' => 'bam corelist date vars ',
             '_nick'    => 'bam',
-        } => 'vars was first released with perl 5.002 (released on 1996-02-96)',
+        } => $vars,
     ],
 );
 
