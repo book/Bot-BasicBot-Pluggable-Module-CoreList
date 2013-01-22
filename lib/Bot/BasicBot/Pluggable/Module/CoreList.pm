@@ -49,16 +49,23 @@ sub told {
     }
     else {
         my $release = Module::CoreList->first_release($module);
-        my $removed = Module::CoreList->removed_from($module);
+        my $removed = $Module::CoreList::VERSION >= 2.32
+            && Module::CoreList->removed_from($module);
+        my $deprecated = $Module::CoreList::VERSION >= 2.77
+            && Module::CoreList->deprecated_in($module);
         no warnings 'uninitialized';
-        $reply
-            = $release
+        push my @reply, $release
             ? "$module was first released with perl $release"
             . " (released on $Module::CoreList::released{$release})"
-            . (   " and removed from perl $removed"
-                . " (released on $Module::CoreList::released{$removed})" )
-            x!! $removed
             : "$module is not in the core";
+        push @reply, "deprecated in perl $deprecated"
+            . " (released on $Module::CoreList::released{$deprecated})"
+            if $deprecated;
+        push @reply, "removed from perl $removed"
+            . " (released on $Module::CoreList::released{$removed})"
+            if $removed;
+        push @reply, join " and ", splice @reply, -2 if @reply > 1;
+        $reply = join ', ', @reply;
     }
 
     return $reply;
