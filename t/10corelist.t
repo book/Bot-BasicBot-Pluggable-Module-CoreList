@@ -186,6 +186,15 @@ my @tests = (
             '_nick'    => 'bam',
         } => 'vars was first released with perl 5.002 (released on 1996-02-29)',
     ],
+    [   {   'body'     => 'corelist CPANPLUS::inc',
+            'raw_nick' => 'BooK!~book@d83-179-185-40.cust.tele2.fr',
+            'who'      => 'BooK',
+            'address'  => 'bam',
+            'channel'  => '#zlonkbam',
+            'raw_body' => 'bam corelist CPANPLUS::inc',
+            '_nick'    => 'bam',
+        } => 'CPANPLUS::inc was first released with perl 5.009005 (released on 2007-07-07) and removed from perl 5.010001 (released on 2009-08-22)',
+    ],
 );
 
 plan tests => @tests + 1;

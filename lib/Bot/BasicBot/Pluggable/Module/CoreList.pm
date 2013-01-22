@@ -48,12 +48,16 @@ sub told {
             . $where;
     }
     else {
-        my ( $release, $date )
-            = ( Module::CoreList->first_release($module), '' );
-        $date  = $Module::CoreList::released{$release} if $release;
-        $reply = $release
-            ? "$module was first released with perl $release ("
-            . "released on $date)"
+        my $release = Module::CoreList->first_release($module);
+        my $removed = Module::CoreList->removed_from($module);
+        no warnings 'uninitialized';
+        $reply
+            = $release
+            ? "$module was first released with perl $release"
+            . " (released on $Module::CoreList::released{$release})"
+            . (   " and removed from perl $removed"
+                . " (released on $Module::CoreList::released{$removed})" )
+            x!! $removed
             : "$module is not in the core";
     }
 
