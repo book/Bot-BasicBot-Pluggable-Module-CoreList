@@ -6,7 +6,7 @@ use Module::CoreList 2.18;
 
 use vars qw( @ISA $VERSION );
 @ISA     = qw(Bot::BasicBot::Pluggable::Module);
-$VERSION = '0.03';
+$VERSION = '0.04';
 
 my $ident = qr/[A-Za-z_][A-Za-z_0-9]*/;
 my $cmds  = qr/find|search|release|date/;

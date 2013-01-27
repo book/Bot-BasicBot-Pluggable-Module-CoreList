@@ -9,7 +9,7 @@ my $build = Module::Build->new(
     requires      => {
         'Test::More'               => 0,
         'Bot::BasicBot::Pluggable' => '0.5',
-        'Module::CoreList'         => 2.18,
+        'Module::CoreList'         => '2.18',
     },
     add_to_cleanup => ['Bot-BasicBot-Pluggable-Module-CoreList-*'],
 );
