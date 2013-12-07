@@ -138,6 +138,9 @@ The search never returns more than 9 replies, to avoid flooding the channel:
 Philippe "BooK" Bruhat, C<< <book@cpan.org> >>, inspired by the existing
 C<corelist> bot, last seen on IRC in May 2006.
 
+Since November 2006, the C<corelist> bot in C<irc.perl.org> runs
+using this module.
+
 =head1 BUGS
 
 Please report any bugs or feature requests to
@@ -148,7 +151,7 @@ make changes.
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2006 Philippe "BooK" Bruhat, All Rights Reserved.
+Copyright 2006-2013 Philippe "BooK" Bruhat, All Rights Reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
