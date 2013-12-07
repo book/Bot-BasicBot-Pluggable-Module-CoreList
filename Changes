@@ -1,5 +1,8 @@
 Revision history for Bot-BasicBot-Pluggable-Module-CoreList
 
+0.05 Sat Dec  7 2013
+        - fix the test for Switch to pass with Module::CoreList >= 2.77
+
 0.04 Sun Jan 27 2013
         - fix the test for Data::Dumper to pass with any version of
           Module::CoreList (thanks to Babar and BinGOs)
