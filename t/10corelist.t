@@ -203,7 +203,7 @@ my @tests = (
             'channel'  => '#zlonkbam',
             'raw_body' => 'bam corelist Switch',
             '_nick'    => 'bam',
-        } => $Module::CoreList::VERSION >= 2.77 ? 'Switch was first released with perl 5.007003 (released on 2002-03-05), deprecated in perl 5.011000 (released on 2009-10-02) and removed from perl 5.013001 (released on 2010-05-20)'
+        } => $Module::CoreList::VERSION >= 2.77 ? 'Switch was first released with perl 5.007003 (released on 2002-03-05), deprecated in perl 5.011 (released on 2009-10-02) and removed from perl 5.013001 (released on 2010-05-20)'
            : $Module::CoreList::VERSION >= 2.32 ? 'Switch was first released with perl 5.007003 (released on 2002-03-05) and removed from perl 5.013001 (released on 2010-05-20)'
            : 'Switch was first released with perl 5.007003 (released on 2002-03-05)',
     ],
