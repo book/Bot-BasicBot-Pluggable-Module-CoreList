@@ -117,19 +117,21 @@ If no command is given, C<release> is the default.
 
 =item * find
 
-    < you> bot corelist search Data
-    < bot> Found Data::Dumper, Module::Build::ConfigData
+The commands C<search> and C<find> are the same.
+
+    < you> bot: corelist search Data
+    < bot> you: Found Data::Dumper, Module::Build::ConfigData
 
 Perl version numbers can be passed as optional parameters to restrict
 the search:
 
-    < you> corelist search Data 5.006
-    < bot> Found Data::Dumper in perl 5.006
+    < you> bot: corelist search Data 5.006
+    < bot> you: Found Data::Dumper in perl 5.006
 
 The search never returns more than 9 replies, to avoid flooding the channel:
 
     < you> bot: corelist find e
-    < bot> Found AnyDBM_File, AutoLoader, B::Assembler, B::Bytecode, B::Debug, B::Deparse, B::Disassembler, B::Showlex, B::Terse, ...
+    < bot> you: Found AnyDBM_File, AutoLoader, B::Assembler, B::Bytecode, B::Debug, B::Deparse, B::Disassembler, B::Showlex, B::Terse, ...
 
 =back
 
